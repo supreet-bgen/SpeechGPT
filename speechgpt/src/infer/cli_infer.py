@@ -11,7 +11,7 @@ import os
 import re
 import traceback
 from peft import PeftModel
-from speechgpt.utils.speech2unit.speech2unit import Speech2Unit
+from ...utils.speech2unit.speech2unit import Speech2Unit
 import transformers
 from transformers import AutoConfig, LlamaForCausalLM, LlamaTokenizer, GenerationConfig
 

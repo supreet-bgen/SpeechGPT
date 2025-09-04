@@ -202,7 +202,7 @@ if __name__ == '__main__':
     parser.add_argument("--wav", type=str)
     args = parser.parse_args()
 
-    ckpt_dir = ""
+    ckpt_dir = "utils/speech2unit/"
 
     s2u = Speech2Unit(
         ckpt_dir=ckpt_dir
