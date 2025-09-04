@@ -31,13 +31,34 @@ logger = logging.getLogger('generate_pseudo_language')
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+from types import SimpleNamespace
+
+def ensure_args_in_ckpt(ckpt_path):
+    ckpt = torch.load(ckpt_path, map_location="cpu")
+    if ckpt.get("args", None) is None:
+        ckpt["args"] = SimpleNamespace(task="audio_pretraining")
+    torch.save(ckpt, ckpt_path)
+
 class FeatureReader(object):
     def __init__(self, ckpt_path, layer, max_chunk=1600000, fp16=False, sampling_rate=16000):
+
+        # state = torch.load(ckpt_path, map_location="cpu")
+        # if state.get("args", None) is None:
+        #     state["args"] = SimpleNamespace(task="audio_pretraining")
+        # torch.save(state, ckpt_path)
         (
             model,
             cfg,
             task,
-        ) = fairseq.checkpoint_utils.load_model_ensemble_and_task([ckpt_path])
+        ) = fairseq.checkpoint_utils.load_model_ensemble_and_task([ckpt_path],
+                                                                arg_overrides={
+        "task": "hubert_pretraining",
+        "data" : "/tmp",
+        "arch": "hubert",
+        "final_dim": 256, 
+        "w2v_args": None   # fake empty dict so "in cfg.model" doesn’t break
+            }
+        )
         self.model = model[0].eval().to(DEVICE)
         self.task = task
         self.layer = layer
@@ -137,7 +158,7 @@ class Speech2Unit(torch.nn.Module):
             sampling_rate(int): sampling_rate default by 16000
         """
         super().__init__()
-
+        print(ckpt_dir)
         ckpt_path = os.path.join(ckpt_dir, "mhubert_base_vp_en_es_fr_it3.pt")
         km_path = os.path.join(ckpt_dir, "mhubert_base_vp_en_es_fr_it3_L11_km1000.bin")
 
@@ -181,7 +202,7 @@ if __name__ == '__main__':
     parser.add_argument("--wav", type=str)
     args = parser.parse_args()
 
-    ckpt_dir = "speechgpt/utils/speech2unit/"
+    ckpt_dir = ""
 
     s2u = Speech2Unit(
         ckpt_dir=ckpt_dir
