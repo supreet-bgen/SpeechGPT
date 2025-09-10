@@ -31,6 +31,7 @@ logger = logging.getLogger('generate_pseudo_language')
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+print(DEVICE)
 from types import SimpleNamespace
 
 def ensure_args_in_ckpt(ckpt_path):
@@ -202,7 +203,7 @@ if __name__ == '__main__':
     parser.add_argument("--wav", type=str)
     args = parser.parse_args()
 
-    ckpt_dir = "utils/speech2unit/"
+    ckpt_dir = ""#"utils/speech2unit/"
 
     s2u = Speech2Unit(
         ckpt_dir=ckpt_dir

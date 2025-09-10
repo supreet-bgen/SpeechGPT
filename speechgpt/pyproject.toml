@@ -44,4 +44,5 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 notebook = "^7.4.5"
 ipykernel = "^6.30.1"
+debugpy = "^1.8.16"
 

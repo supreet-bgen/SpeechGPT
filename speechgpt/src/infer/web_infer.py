@@ -1,8 +1,8 @@
 import os
 import numpy as np
 import gradio as gr
-from speechgpt.utils.speech2unit.speech2unit import Speech2Unit
-from speechgpt.src.infer.cli_inference import SpeechGPTInference
+from utils.speech2unit.speech2unit import Speech2Unit
+from src.infer.cli_inference import SpeechGPTInference
 import soundfile as sf
 import argparse
 
